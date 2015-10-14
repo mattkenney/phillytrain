@@ -1,0 +1,11 @@
+<div class="panel panel-default" data-ng-controller="TrainCtrl">
+  <div class="list-group">
+    <div class="list-group-item" data-ng-repeat="station in rrSchedule">
+      <span data-ng-bind="station.station"></span>
+      @
+      <span data-ng-bind="station.scheduled" data-ng-class="{'app-delayed-from': station.isDelayed}"></span>
+      <span class="app-delayed-to" data-ng-bind="station.estimated" data-ng-if="!station.actual"></span>
+      <span data-ng-bind="station.actual" data-ng-if="station.isDelayed"></span>
+    </div>
+  </div>
+</div>

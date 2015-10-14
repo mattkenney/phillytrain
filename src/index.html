@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Philly Train</title>
+<style type="text/css">
+/*=include libs/**//*.css */
+.app-delay:before {
+  content: "(";
+}
+.app-delay:after {
+  content: ")";
+}
+.app-delayed-from {
+  text-decoration: line-through;
+  color:#999;
+}
+.app-delayed-to {
+  font-style: italic;
+}
+.app-delete {
+  float: right;
+  padding: 0 1ex;
+}
+.app-delete:after {
+  content: "\2613";
+}
+</style>
+<!-- inject:css -->
+<!-- endinject -->
+</head>
+<body data-ng-app="app">
+<div class="container">
+  <div class="header clearfix">
+    <h3 class="text-muted">Philly Train</h3>
+  </div>
+  <noscript>
+    <div class="alert alert-danger">
+      To use this site, please enable JavaScript in your browser.
+    </div>
+  </noscript>
+  <!--[if lte IE 8]>
+    <div class="alert alert-warning">
+      Your browser is out of date. Some features of this site will not work.
+      You should upgrade.
+    </div>
+  <![endif]-->
+  <div data-ng-view=""></div>
+</div>
+<!-- the default view is here for quick display -->
+<script id="partials/tripform.html" type="text/ng-template">
+  <div data-ng-controller="TripFormCtrl">
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <form autocomplete="off" class="form-horizontal" 
+              data-ng-submit="showFormTrip()" name="tripForm">
+            <fieldset>
+              <legend>Plan a trip</legend>
+              <div class="form-group">
+                <label for="stationFrom"
+                  class="col-lg-2 control-label">From</label>
+                <div class="col-lg-10">
+                  <input class="form-control" data-app-station=""
+                    data-ng-model="stationFrom"
+                    data-typeahead="name for name in stopNames | filter:$viewValue:startsWithIgnoreCase"
+                    id="stationFrom" placeholder="station" type="text">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="stationTo" class="col-lg-2 control-label">To</label>
+                <div class="col-lg-10">
+                  <input class="form-control" data-app-station=""
+                    data-ng-model="stationTo"
+                    data-typeahead="name for name in stopNames | filter:$viewValue:startsWithIgnoreCase"
+                    id="stationTo" placeholder="station" type="text">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                  <input class="btn btn-primary" type="submit"
+                    value="Find Trip"/>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="row" data-ng-if="recent.length">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h4>Recent trips</h4>
+          <ul class="nav nav-pills nav-stacked">
+            <li data-ng-repeat="trip in recent">
+              <a href="#" data-ng-click="showTrip(trip, $event)">
+                <span data-ng-bind="trip.stationFrom"></span>
+                &#8211;
+                <span data-ng-bind="trip.stationTo"></span>
+                <span class="app-delete"
+                  data-ng-click="removeTrip(trip, $event)"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+<script data-app-data="railroad" type="application/json">
+/*=include data/railroad.json */
+</script>
+<!-- inject:js -->
+<!-- endinject -->
+</body>
+</html>

@@ -1,0 +1,41 @@
+<div class="panel panel-default" data-ng-controller="TripListCtrl">
+  <div class="list-group" data-ng-repeat="trip in nextToArrive">
+    <a href="#" class="list-group-item active">
+      <span data-ng-bind="trip.depart"></span>
+      &#8211;
+      <span data-ng-bind="trip.arrive"></span>
+      <span data-ng-if="trip.trains.length > 1">
+      &#8211;
+      <span data-ng-bind="trip.trains.length - 1"></span>
+      connection
+      </span>
+    </a>
+    <a href="#" class="list-group-item" data-ng-click="showTrain(train, $event)" data-ng-repeat="train in trip.trains">
+      <div>
+        <span data-ng-bind="train.line"></span>
+        <span data-ng-bind="train.train"></span>
+      </div>
+      <div>
+        <span data-ng-bind="train.depart" data-ng-class="{'app-delayed-from': train.departDelayed}"></span>
+        <span class="app-delayed-to" data-ng-bind="train.departDelayed"></span>
+        <span class="app-delay" data-ng-bind="train.delay" data-ng-if="train.delay"></span>
+        Depart @
+        <span data-ng-bind="train.from"></span>
+      </div>
+      <div>
+        <span data-ng-bind="train.arrive" data-ng-class="{'app-delayed-from': train.departDelayed}"></span>
+        <span class="app-delayed-to" data-ng-bind="train.arriveDelayed"></span>
+        <span class="app-delay" data-ng-bind="train.delay" data-ng-if="train.delay"></span>
+        Arrive @
+        <span data-ng-bind="train.to"></span>
+      </div>
+    </a>
+  </div>
+  <div class="alert alert-warning" data-ng-if="nextToArrive.$resolved && nextToArrive.length == 0">
+    No trip from
+    <span data-ng-bind="stationFrom"></span>
+    to
+    <span data-ng-bind="stationTo"></span>
+    is possible at this time.
+  </div>
+</div>

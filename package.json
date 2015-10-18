@@ -1,7 +1,11 @@
 {
-  "name": "septimus",
-  "version": "2.0.0",
+  "name": "phillytrain",
+  "version": "0.0.1",
   "description": "Philadelphia commuter rail trip planner",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mattkenney/phillytrain"
+  },
   "author": "matt@phillytrain.com",
   "license": "AGPL",
   "dependencies": {
@@ -12,6 +16,7 @@
     "gulp-cssimport": "~2.1.1",
     "gulp-include": "~2.0.2",
     "gulp-inject": "~2.2.0",
+    "gulp-inject-cdn": "git+https://github.com/mattkenney/gulp-inject-cdn#v0.0.1",
     "gulp-jsonminify": "~1.0.0",
     "gulp-minify-html": "~1.0.4",
     "gulp-sort": "~1.1.1",

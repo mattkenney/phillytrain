@@ -1,4 +1,5 @@
-var del = require('del')
+var cdn = require('gulp-inject-cdn')
+,   del = require('del')
 ,   gulp = require('gulp')
 ,   gutil = require('gulp-util')
 ,   concat = require('gulp-concat')
@@ -14,7 +15,7 @@ var del = require('del')
 ;
 
 gulp.task('clean', function () {
-  return del(['work/**', 'public/**']);
+  del.sync(['work/**', 'public/**']);
 });
 
 gulp.task('data', function () {
@@ -25,26 +26,27 @@ gulp.task('data', function () {
   return result.pipe(gulp.dest('work/data'));
 });
 
-gulp.task('html', ['data', 'libcss', 'libjs'], function () {
+gulp.task('html', ['data', 'js', 'libcss'], function () {
   if (gutil.env.type === 'prod') {
-    var libs = gulp.src([
-          'public/libs/**/*.min.js',
-          'public/app.min.js'
-        ]);
+    var libs = gulp.src('public/app.min.js', {read: false});
   } else {
     libs = gulp.src([
-          'public/css/**/*.css',
-          'public/libs/**/*.js',
-          'public/js/**/*.js',
-          '!public/libs/**/*.min.css',
-          '!public/libs/**/*.min.js'
-        ]);
+          'public/**/*.css',
+          'public/**/*.js',
+          '!public/js/app.js',
+          '!public/**/*.min.js',
+          '!public/**/*.min.css'
+        ], {read: false}).pipe(sort());
+    libs = merge(gulp.src('public/js/app.js', {read: false}), libs);
   }
-  libs = libs.pipe(sort({asc: false}));
   var result = gulp.src('src/index.html')
         .pipe(gulp.dest('work'))
         .pipe(include())
         .pipe(inject(libs, {addRootSlash: false, ignorePath: 'public'}))
+        .pipe(cdn('cdn.json', {
+          nomin: (gutil.env.type !== 'prod'),
+          scheme: 'https'
+        }))
   ;
   result = merge(result, gulp.src(['src/**/*.html', '!src/index.html']));
   if (gutil.env.type === 'prod') {
@@ -59,10 +61,12 @@ gulp.task('html', ['data', 'libcss', 'libjs'], function () {
 });
 
 gulp.task('js', function () {
-  var result = gulp.src('src/**/*.js');
+  var result = gulp.src(['src/**/*.js', '!src/js/app.js'])
+    .pipe(sort())
+  ;
+  result = merge(gulp.src('src/**/js/app.js'), result);
   if (gutil.env.type === 'prod') {
     result = result
-      .pipe(sort({asc: false}))
       .pipe(concat('app.min.js'))
       .pipe(uglify())
       ;
@@ -83,33 +87,12 @@ gulp.task('libcss', function () {
     ;
 });
 
-gulp.task('libjs', function () {
-  var result = gulp.src([
-      'bower_components/**/*.js',
-      'bower_components/**/*.map',
-      '!bower_components/**/index.js',
-      '!bower_components/moment/**/*', // no bower.json - expicit list below
-      '!bower_components/**/ui-bootstrap.*', // using tpls version
-      '!bower_components/**/demo-app.js'
-    ]);
-  result = merge(result, gulp.src([
-      'bower_components/moment/min/moment.min.js',
-      'bower_components/moment/moment.js'
-    ]));
-  return result
-    .pipe(gulp.dest('public/libs'));
-});
-
 gulp.task('watch', function() {
-    gulp.watch('src/**/*.html', ['html']);
-    gulp.watch('src/**/*.json', ['data', 'html']);
-    gulp.watch('src/**/*.js', ['js']);
+    gulp.watch(['src/**/*.html', 'src/**/*.js', 'src/**/*.json'], ['html']);
 });
 
-gulp.task('webserver', ['js', 'html'], function() {
+gulp.task('webserver', ['html'], function() {
   connect.server({ root: 'public' });
 });
 
-gulp.task('default', ['watch', 'webserver'], function() {
-  // place code for your default task here
-});
+gulp.task('default', ['clean', 'watch', 'webserver'], function() {});

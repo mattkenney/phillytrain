@@ -28,6 +28,7 @@ angular.module('app').factory('appNextToArrive', [
     }
 
     function transform(data) {
+      appRailroad.checkResponseData(data);
       angular.forEach(data, function (trip) {
         trip.trains = [ parseTrain(trip, 0) ];
         trip.depart = trip.trains[0].depart;

@@ -1,5 +1,6 @@
 angular.module('app', [
-    'ngAnimate', 'ngResource', 'ngRoute', 'LocalStorageModule', 'ui.bootstrap'
+    'ngAnimate', 'ngResource', 'ngRoute', 'ngSanitize',
+    'LocalStorageModule', 'ui.bootstrap'
   ]).config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
@@ -9,7 +10,7 @@ angular.module('app', [
       when('/trip/:stationFrom/:stationTo', {
         templateUrl: 'partials/triplist.html'
       }).
-      when('/train/:train', {
+      when('/trip/:stationFrom/:stationTo/:line/:train', {
         templateUrl: 'partials/train.html'
       }).
       otherwise({

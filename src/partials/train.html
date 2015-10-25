@@ -1,11 +1,23 @@
-<div class="panel panel-default" data-ng-controller="TrainCtrl">
-  <div class="list-group">
-    <div class="list-group-item" data-ng-repeat="station in rrSchedule">
-      <span data-ng-bind="station.station"></span>
-      @
-      <span data-ng-bind="station.scheduled" data-ng-class="{'app-delayed-from': station.isDelayed}"></span>
-      <span class="app-delayed-to" data-ng-bind="station.estimated" data-ng-if="!station.actual"></span>
-      <span data-ng-bind="station.actual" data-ng-if="station.isDelayed"></span>
+<div data-ng-controller="TrainCtrl">
+  <div class="alert alert-warning" data-ng-if="errorMessage">
+    Drat! Something went wrong.
+    <span data-ng-bind="errorMessage"></span>
+  </div>
+  <div class="panel panel-default">
+    <div class="list-group">
+      <div class="list-group-item active">
+        <span data-ng-bind="line"></span>
+        <span data-ng-bind="train"></span>
+      </div>
+      <div class="list-group-item" data-ng-repeat="station in rrSchedule">
+        <span data-ng-bind="station.station"></span>
+        @
+        <span data-ng-bind="station.scheduled"
+          data-ng-class="{'app-delayed-from': station.isDelayed}"></span>
+        <span class="app-delayed-to" data-ng-bind="station.estimated" 
+          data-ng-if="station.estimated && station.isDelayed"></span>
+        <span data-ng-bind="station.actual" data-ng-if="station.isDelayed"></span>
+      </div>
     </div>
   </div>
 </div>

@@ -1,6 +1,6 @@
 angular.module('app').controller('TripFormCtrl', [
-  '$location', '$scope', 'localStorageService',
-  function ($location, $scope, localStorageService) {
+  'appRailroad', '$location', '$scope', 'localStorageService',
+  function (appRailroad, $location, $scope, localStorageService) {
     function addToRecent(trip) {
       var recent = localStorageService.get('recent') || [];
       _.remove(recent, _.matches({
@@ -77,9 +77,7 @@ angular.module('app').controller('TripFormCtrl', [
       );
     };
 
-    $scope.stopNames = _.map($scope.railroad.stops, function (value, key) {
-      return (value.alt || key);
-    });
+    $scope.stopNames = appRailroad.stopNames;
 
     // this sets $scope.recent
     $scope.removeTrip();

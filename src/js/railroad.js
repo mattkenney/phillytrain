@@ -1,16 +1,40 @@
-angular.module('app').factory('appRailroad',
-  function () {
+angular.module('app').factory('appRailroad', ['$rootScope',
+  function ($rootScope) {
+    var stationCodes = {}
+    ,   routeCodes = {}
+    ;
+
+    _.forEach($rootScope.railroad.routes, function (value, key) {
+      routeCodes[value] = key;
+    });
+
     return {
+      stopNames: _.map($rootScope.railroad.stops, function (value, key) {
+        var name = (value.alt || key);
+        stationCodes[key] = stationCodes[name] = value.r;
+        return name;
+      }),
+
+      routeCodes: routeCodes,
+
       arrayConcat: function (target, value) {
         var target = angular.isArray(target) ? target : [target];
         return target.concat(value);
       },
 
-      timeCopy: function (target, from, to) {
-        var time = this.timeParse(target[from]);
-        if (moment.isMoment(time)) {
-          target[to] = this.timeFormat(time);
+      checkResponseData: function (data) {
+        if (!angular.isArray(data)) {
+          throw (data && (data.message || data.error) || "bad response");
         }
+      },
+
+      expandStationName: function (name) {
+        var station = $rootScope.railroad.stops[name];
+        return (station && station.alt || name)
+      },
+
+      isStation: function (name) {
+        return stationCodes.hasOwnProperty(name);
       },
 
       timeFormat: function (time) {
@@ -40,4 +64,4 @@ angular.module('app').factory('appRailroad',
       }
     }
   }
-);
+]);

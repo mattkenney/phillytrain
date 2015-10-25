@@ -1,12 +1,14 @@
 angular.module('app').controller('TripListCtrl', [
-  'appNextToArrive', '$location', '$routeParams', '$scope',
-  function(appNextToArrive, $location, $routeParams, $scope) {
-    if (!$scope.railroad.stops.hasOwnProperty($routeParams.stationFrom)) {
+  'appAlerts', 'appNextToArrive', 'appRailroad',
+  '$location', '$routeParams', '$scope',
+  function (appAlerts, appNextToArrive, appRailroad,
+            $location, $routeParams, $scope) {
+    if (!appRailroad.isStation($routeParams.stationFrom)) {
       $location.url('/trips');
       return;
     }
 
-    if (!$scope.railroad.stops.hasOwnProperty($routeParams.stationTo)) {
+    if (!appRailroad.isStation($routeParams.stationTo)) {
       $location.url('/trips');
       return;
     }
@@ -18,6 +20,21 @@ angular.module('app').controller('TripListCtrl', [
     {
       req1: $routeParams.stationFrom,
       req2: $routeParams.stationTo
+    }, null, null, function (res) {
+      $scope.errorMessage = angular.isString(res) ? res : " ";
+    });
+
+    $scope.nextToArrive.$promise.then(function (data) {
+      $scope.alerts = {};
+      angular.forEach(data, function (trip) {
+        angular.forEach(trip.trains, function (train) {
+          if (!$scope.alerts.hasOwnProperty(train.line)) {
+            $scope.alerts[train.line] = appAlerts.query({
+              req1: 'rr_route_' + appRailroad.routeCodes[train.line]
+            });
+          }
+        });
+      });
     });
 
     $scope.showTrain = function (train, evt) {
@@ -25,7 +42,15 @@ angular.module('app').controller('TripListCtrl', [
         evt.stopPropagation();
         evt.preventDefault();
       }
-      $location.url('/train/' + encodeURIComponent(train.train));
+      var path = [ '', 'trip' ];
+      path.push(train.from);
+      path.push(train.to);
+      path.push(train.line.replace('/', '-'));
+      path.push(train.train);
+      path = _.map(path, function (segment) {
+        return encodeURIComponent(segment);
+      }).join('/');
+      $location.url(path);
     };
   }
 ]);

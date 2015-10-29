@@ -3,14 +3,17 @@ angular.module('app').factory('appRRSchedules', [
   function (appRailroad, $http, $resource, $routeParams) {
     function transform(data) {
       appRailroad.checkResponseData(data);
-      var from = _.findIndex(data,
+      var stationFrom = appRailroad.splitViaName($routeParams.stationFrom)[1]
+      ,   stationTo = appRailroad.splitViaName($routeParams.stationTo)[1]
+      ,   from = _.findIndex(data,
             function (station) {
-              return (station.station === $routeParams.stationFrom);
-            });
-      var to = _.findIndex(data,
+              return (station.station === stationFrom);
+            })
+      ,   to = _.findIndex(data,
             function (station) {
-              return (station.station === $routeParams.stationTo);
-            });
+              return (station.station === stationTo);
+            })
+      ;
       return  _.map(data.slice(from, to + 1), function (station) {
         var scheduled = appRailroad.timeParse(station.sched_tm)
         ,   estimated = appRailroad.timeParse(station.est_tm)

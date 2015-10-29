@@ -1,12 +1,14 @@
 angular.module('app').controller('TrainCtrl', [
   'appRailroad', 'appRRSchedules', '$location', '$routeParams', '$scope',
   function(appRailroad, appRRSchedules, $location, $routeParams, $scope) {
-    if (!appRailroad.isStation($routeParams.stationFrom)) {
+    var stationFrom = appRailroad.splitViaName($routeParams.stationFrom);
+    if (!appRailroad.isStation(stationFrom[1])) {
       $location.url('/trips');
       return;
     }
 
-    if (!appRailroad.isStation($routeParams.stationTo)) {
+    var stationTo = appRailroad.splitViaName($routeParams.stationTo);
+    if (!appRailroad.isStation(stationTo[1])) {
       $location.url('/trips');
       return;
     }
@@ -22,12 +24,21 @@ angular.module('app').controller('TrainCtrl', [
       return;
     }
 
+    $scope.back = function () {
+      var path = [ '', 'trip' ];
+      path.push(encodeURIComponent(stationFrom[0]));
+      path.push(encodeURIComponent(stationTo[0]));
+      path = path.join('/');
+      $location.url(path);
+    };
+
     $scope.line = line;
     $scope.train = $routeParams.train;
 
     $scope.rrSchedule = appRRSchedules.query(
     {
-      req1: $routeParams.train
+      req1: $routeParams.train,
+      _: new Date().getTime()
     }, null, null, function (res) {
       $scope.errorMessage = angular.isString(res) ? res : " ";
     });

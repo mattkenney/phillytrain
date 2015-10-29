@@ -3,6 +3,12 @@ angular.module('app').controller('TripFormCtrl', [
   function (appRailroad, $location, $scope, localStorageService) {
     function addToRecent(trip) {
       var recent = localStorageService.get('recent') || [];
+      recent = _.map(recent, function (t) {
+        return {
+          stationFrom: t.stationFrom || t.from,
+          stationTo: t.stationTo || t.to
+        };
+      });
       _.remove(recent, _.matches({
         stationFrom: trip.stationFrom,
         stationTo: trip.stationTo
@@ -26,6 +32,15 @@ angular.module('app').controller('TripFormCtrl', [
         evt.preventDefault();
       }
       var recent = localStorageService.get('recent') || [];
+      if (typeof recent === 'string') {
+        // convert old format
+        recent = _.map(JSON.parse(recent), function (t) {
+          return {
+              stationFrom: t.from,
+              stationTo: t.to
+          };
+        });
+      }
       if (trip) {
         _.remove(recent, _.matches({
           stationFrom: trip.stationFrom,

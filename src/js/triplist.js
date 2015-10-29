@@ -16,6 +16,10 @@ angular.module('app').controller('TripListCtrl', [
     $scope.stationFrom = $routeParams.stationFrom;
     $scope.stationTo = $routeParams.stationTo;
 
+    $scope.back = function () {
+      $location.url('/');
+    };
+
     $scope.nextToArrive = appNextToArrive.query(
     {
       req1: $routeParams.stationFrom,
@@ -43,8 +47,8 @@ angular.module('app').controller('TripListCtrl', [
         evt.preventDefault();
       }
       var path = [ '', 'trip' ];
-      path.push(train.from);
-      path.push(train.to);
+      path.push(appRailroad.makeViaName($routeParams.stationFrom, train.from));
+      path.push(appRailroad.makeViaName($routeParams.stationTo, train.to));
       path.push(train.line.replace('/', '-'));
       path.push(train.train);
       path = _.map(path, function (segment) {

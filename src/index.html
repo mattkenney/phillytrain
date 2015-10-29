@@ -5,6 +5,8 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Philly Train</title>
+<!-- inject:css -->
+<!-- endinject -->
 <style type="text/css">
 /*=include libs/**//*.css */
 .app-delay:before {
@@ -27,15 +29,34 @@
 .app-delete:after {
   content: "\2613";
 }
+.app-navbar-filler {
+  height: 93px;
+}
+html {
+  overflow-y: scroll;
+}
 </style>
-<!-- inject:css -->
-<!-- endinject -->
 </head>
 <body data-ng-app="app">
 <div class="container">
-  <div class="header clearfix">
-    <h3 class="text-muted">Philly Train</h3>
+  <div data-ng-view=""></div>
+</div>
+<!-- the default view is here for quick display -->
+<script id="partials/navbar.html" type="text/ng-template">
+  <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" data-ng-click="back()" data-ng-show="back">
+          <svg fill="#fff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+          </svg>
+        </a>
+        <a class="navbar-brand" href="#/">Philly Train</a>
+      </div>
+    </div>
   </div>
+  <div class="app-navbar-filler"></div>
   <noscript>
     <div class="alert alert-danger">
       To use this site, please enable JavaScript in your browser.
@@ -47,12 +68,11 @@
       You should upgrade.
     </div>
   <![endif]-->
-  <div data-ng-view=""></div>
-</div>
-<!-- the default view is here for quick display -->
+</script>
 <script id="partials/tripform.html" type="text/ng-template">
   <div data-ng-controller="TripFormCtrl">
-    <div class="row">
+    <div data-ng-include="'partials/navbar.html'"></div>
+    <div class="xrow">
       <div class="panel panel-default">
         <div class="panel-body">
           <form autocomplete="off" class="form-horizontal" 
@@ -89,7 +109,7 @@
         </div>
       </div>
     </div>
-    <div class="row" data-ng-if="recent.length">
+    <div class="xrow" data-ng-if="recent.length">
       <div class="panel panel-default">
         <div class="panel-body">
           <h4>Recent trips</h4>

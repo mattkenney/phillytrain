@@ -37,6 +37,18 @@ angular.module('app').factory('appRailroad', ['$rootScope',
         return stationCodes.hasOwnProperty(name);
       },
 
+      makeViaName: function (first, second) {
+        if (first === second) {
+          return first;
+        }
+        return [ first, 'via', second ].join(' ');
+      },
+
+      splitViaName: function (name) {
+        var m = (/^(.*[^ ]) +via +(.*)$/).exec(name);
+        return (m ? [ m[1], m[2] ] : [ name, name ]);
+      },
+
       timeFormat: function (time) {
         var result = time;
         if (!((/na/i).test(time) || moment.isMoment(result))) {

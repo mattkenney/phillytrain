@@ -26,7 +26,7 @@ gulp.task('data', function () {
   return result.pipe(gulp.dest('work/data'));
 });
 
-gulp.task('html', ['data', 'images', 'js', 'libcss'], function () {
+gulp.task('html', ['data', 'js', 'libcss', 'static'], function () {
   if (gutil.env.type === 'prod') {
     var libs = gulp.src('public/app.min.js', {read: false});
   } else {
@@ -60,8 +60,9 @@ gulp.task('html', ['data', 'images', 'js', 'libcss'], function () {
   return result.pipe(gulp.dest('public'));
 });
 
-gulp.task('images', function () {
-  return gulp.src(['images/**/*.ico', 'images/**/*.png', 'images/**/*.svg'])
+gulp.task('static', function () {
+  return gulp.src(['static/**/*.ico', 'static/**/*.png', 'static/**/*.svg',
+      'static/**/*.txt'])
     .pipe(gulp.dest('public'))
     ;
 });

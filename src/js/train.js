@@ -35,11 +35,7 @@ angular.module('app').controller('TrainCtrl', [
     $scope.line = line;
     $scope.train = $routeParams.train;
 
-    $scope.rrSchedule = appRRSchedules.query(
-    {
-      req1: $routeParams.train,
-      _: new Date().getTime()
-    }, null, null, function (res) {
+    $scope.rrSchedule = appRRSchedules($routeParams.train, function (res) {
       $scope.errorMessage = angular.isString(res) ? res : " ";
     });
   }

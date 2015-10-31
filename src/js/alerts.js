@@ -1,6 +1,6 @@
 angular.module('app').factory('appAlerts', [
-  'appRailroad', '$http', '$resource',
-  function (appRailroad, $http, $resource) {
+  'appAnalytics', 'appRailroad', '$http', '$resource',
+  function (appAnalytics, appRailroad, $http, $resource) {
     function transform(data) {
       appRailroad.checkResponseData(data);
       var result = [];
@@ -12,7 +12,7 @@ angular.module('app').factory('appAlerts', [
       return result;
     }
 
-    return $resource(
+    var collection = $resource(
       'http://www3.septa.org/hackathon/Alerts/get_alert_data.php',
       {
         callback: 'JSON_CALLBACK'
@@ -26,5 +26,13 @@ angular.module('app').factory('appAlerts', [
         }
       }
     );
+
+    return function (line) {
+      var params = {
+        req1: 'rr_route_' + appRailroad.routeCodes[line]
+      };
+      appAnalytics('send', 'event', 'API', 'Alerts', JSON.stringify(params));
+      return collection.query(params);
+    }
   }
 ]);

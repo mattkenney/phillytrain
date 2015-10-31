@@ -1,6 +1,6 @@
 angular.module('app').factory('appNextToArrive', [
-  'appRailroad', '$http', '$resource', '$routeParams',
-  function (appRailroad, $http, $resource, $routeParams) {
+  'appAnalytics', 'appRailroad', '$http', '$resource', '$routeParams',
+  function (appAnalytics, appRailroad, $http, $resource, $routeParams) {
     function parseTrain(trip, num) {
       var phase = num ? 'term' : 'orig'
       ,   result = {
@@ -42,7 +42,7 @@ angular.module('app').factory('appNextToArrive', [
       return data;
     }
 
-    return $resource(
+    var collection = $resource(
       'http://www3.septa.org/hackathon/NextToArrive/',
       {
         callback: 'JSON_CALLBACK'
@@ -59,5 +59,14 @@ angular.module('app').factory('appNextToArrive', [
         stripTrailingSlashes: false
       }
     );
+
+    return function (stationFrom, stationTo, onError) {
+      var params = {
+        req1: stationFrom,
+        req2: stationTo
+      };
+      appAnalytics('send', 'event', 'API', 'NextToArrive', JSON.stringify(params));
+      return collection.query(params , null, null, onError);
+    };
   }
 ]);

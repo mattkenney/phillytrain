@@ -1,17 +1,19 @@
 angular.module('app').factory('appRRSchedules', [
-  'appRailroad', '$http', '$resource', '$routeParams',
-  function (appRailroad, $http, $resource, $routeParams) {
+  'appAnalytics', 'appRailroad', '$http', '$resource', '$routeParams',
+  function (appAnalytics, appRailroad, $http, $resource, $routeParams) {
     function transform(data) {
       appRailroad.checkResponseData(data);
       var stationFrom = appRailroad.splitViaName($routeParams.stationFrom)[1]
       ,   stationTo = appRailroad.splitViaName($routeParams.stationTo)[1]
       ,   from = _.findIndex(data,
             function (station) {
-              return (station.station === stationFrom);
+              var name = appRailroad.expandStationName(station.station);
+              return (name === stationFrom);
             })
       ,   to = _.findIndex(data,
             function (station) {
-              return (station.station === stationTo);
+              var name = appRailroad.expandStationName(station.station);
+              return (name === stationTo);
             })
       ;
       return  _.map(data.slice(from, to + 1), function (station) {
@@ -33,7 +35,7 @@ angular.module('app').factory('appRRSchedules', [
       });
     }
 
-    return $resource(
+    var collection = $resource(
       'http://www3.septa.org/hackathon/RRSchedules/',
       {
         callback: 'JSON_CALLBACK'
@@ -50,5 +52,14 @@ angular.module('app').factory('appRRSchedules', [
         stripTrailingSlashes: false
       }
     );
+
+    return function (train, onError) {
+      var params = {
+        req1: train
+      };
+      appAnalytics('send', 'event', 'API', 'RRSchedules', JSON.stringify(params));
+      params._ = new Date().getTime();
+      return collection.query(params, null, null, onError)
+    };
   }
 ]);

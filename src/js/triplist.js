@@ -20,22 +20,20 @@ angular.module('app').controller('TripListCtrl', [
       $location.url('/');
     };
 
-    $scope.nextToArrive = appNextToArrive.query(
-    {
-      req1: $routeParams.stationFrom,
-      req2: $routeParams.stationTo
-    }, null, null, function (res) {
-      $scope.errorMessage = angular.isString(res) ? res : " ";
-    });
+    $scope.nextToArrive = appNextToArrive(
+      $routeParams.stationFrom,
+      $routeParams.stationTo,
+      function (res) {
+        $scope.errorMessage = angular.isString(res) ? res : " ";
+      }
+    );
 
     $scope.nextToArrive.$promise.then(function (data) {
       $scope.alerts = {};
       angular.forEach(data, function (trip) {
         angular.forEach(trip.trains, function (train) {
           if (!$scope.alerts.hasOwnProperty(train.line)) {
-            $scope.alerts[train.line] = appAlerts.query({
-              req1: 'rr_route_' + appRailroad.routeCodes[train.line]
-            });
+            $scope.alerts[train.line] = appAlerts(train.line);
           }
         });
       });

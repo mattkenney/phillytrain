@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8"/>
-<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta charset="utf-8" />
+<meta content="IE=edge" http-equiv="X-UA-Compatible" />
+<meta content="width=device-width, initial-scale=1" name="viewport" />
 <title>Philly Train</title>
 <!-- inject:css -->
 <!-- endinject -->
@@ -26,9 +26,6 @@
   float: right;
   padding: 0 1ex;
 }
-.app-delete:after {
-  content: "\2613";
-}
 .app-navbar-filler {
   height: 93px;
 }
@@ -36,6 +33,15 @@ html {
   overflow-y: scroll;
 }
 </style>
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create','UA-41221215-1','auto');
+</script>
+<!-- End Google Analytics -->
 </head>
 <body data-ng-app="app">
 <div class="container">
@@ -45,25 +51,24 @@ html {
 <script id="partials/navbar.html" type="text/ng-template">
   <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
     <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" data-ng-click="back()" data-ng-show="back">
-          <svg fill="#fff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0h24v24H0z" fill="none"/>
-            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-          </svg>
-        </a>
-        <a class="navbar-brand" href="#/">Philly Train</a>
-      </div>
+      <a class="navbar-brand" data-ng-click="back()" data-ng-show="back">
+        <svg fill="#fff" height="24" viewBox="0 0 24 24" width="24"
+            xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+        </svg>
+      </a>
+      <a class="navbar-brand" href="#/">Philly Train</a>
     </div>
   </div>
   <div class="app-navbar-filler"></div>
   <noscript>
-    <div class="alert alert-danger">
+    <div class="alert alert-danger" role="alert">
       To use this site, please enable JavaScript in your browser.
     </div>
   </noscript>
   <!--[if lte IE 8]>
-    <div class="alert alert-warning">
+    <div class="alert alert-warning" role="alert">
       Your browser is out of date. Some features of this site will not work.
       You should upgrade.
     </div>
@@ -101,7 +106,7 @@ html {
               <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
                   <input class="btn btn-primary" type="submit"
-                    value="Find Trip"/>
+                    value="Find Trip" />
                 </div>
               </div>
             </fieldset>
@@ -120,7 +125,7 @@ html {
                 &#8211;
                 <span data-ng-bind="trip.stationTo"></span>
                 <span class="app-delete"
-                  data-ng-click="removeTrip(trip, $event)"></span>
+                  data-ng-click="removeTrip(trip, $event)">&times;</span>
               </a>
             </li>
           </ul>

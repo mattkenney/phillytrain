@@ -26,6 +26,9 @@
   float: right;
   padding: 0 1ex;
 }
+.app-delete:after {
+  content: "\2613";
+}
 .app-navbar-filler {
   height: 93px;
 }
@@ -51,14 +54,25 @@ ga('create','UA-41221215-1','auto');
 <script id="partials/navbar.html" type="text/ng-template">
   <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
     <div class="container-fluid">
-      <a class="navbar-brand" data-ng-click="back()" data-ng-show="back">
-        <svg fill="#fff" height="24" viewBox="0 0 24 24" width="24"
-            xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0h24v24H0z" fill="none" />
-          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-        </svg>
-      </a>
-      <a class="navbar-brand" href="#/">Philly Train</a>
+        <a class="navbar-brand" data-ng-click="back()" data-ng-show="back">
+          <svg fill="#fff" height="24" viewBox="0 0 24 24" width="24"
+              xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+          </svg>
+        </a>
+        <a class="navbar-brand" href="#/">Philly Train</a>
+        <ul class="nav navbar-nav pull-right">
+          <li>
+            <a href="" data-ng-click="about=!!!about">
+              <svg fill="#fff" height="24" viewBox="0 0 24 24" width="24"
+                  xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z" />
+              </svg>
+            </a>
+          </li>
+        </ul>
     </div>
   </div>
   <div class="app-navbar-filler"></div>
@@ -73,6 +87,17 @@ ga('create','UA-41221215-1','auto');
       You should upgrade.
     </div>
   <![endif]-->
+  <div class="alert alert-info" data-ng-show="about" role="alert">
+    <button type="button" class="close" data-ng-click="about=false"
+        aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <a href="http://phillytrain.com">phillytrain.com</a>:
+    Philadelphia regional rail trip planner. Data provided by
+    <a href="http://www3.septa.org/hackathon/" target="_blank">SEPTA</a>.
+    Developed by
+    <a href="mailto:matt@phillytrain.com">matt@phillytrain.com</a>.
+  </div>
 </script>
 <script id="partials/tripform.html" type="text/ng-template">
   <div data-ng-controller="TripFormCtrl">
@@ -125,7 +150,7 @@ ga('create','UA-41221215-1','auto');
                 &#8211;
                 <span data-ng-bind="trip.stationTo"></span>
                 <span class="app-delete"
-                  data-ng-click="removeTrip(trip, $event)">&times;</span>
+                  data-ng-click="removeTrip(trip, $event)"></span>
               </a>
             </li>
           </ul>

@@ -10,9 +10,27 @@ var cdn = require('gulp-inject-cdn')
 ,   jsonminify = require('gulp-jsonminify')
 ,   merge = require('merge-stream')
 ,   minimize = require('gulp-minify-html')
+,   replace = require('gulp-replace')
 ,   sort = require('gulp-sort')
 ,   uglify = require('gulp-uglify')
 ;
+
+function version(path) {
+  if (!version.ts) {
+    version.ts = new Date().toISOString().replace(/[^0-9A-Z]/g, '');
+  }
+  if (path) {
+    path = String(path);
+    if (path.charAt(0) === '!') {
+      var segments = ['!public', version.ts, path.substring(1)];
+    } else {
+      segments = ['public', version.ts, path];
+    }
+  } else {
+    segments = ['public', version.ts];
+  }
+  return segments.join('/');
+}
 
 gulp.task('clean', function () {
   del.sync(['work/**', 'public/**']);
@@ -26,21 +44,22 @@ gulp.task('data', function () {
   return result.pipe(gulp.dest('work/data'));
 });
 
-gulp.task('html', ['data', 'js', 'libcss', 'static'], function () {
+gulp.task('html', ['data', 'js', 'libcss', 'partials', 'static'], function () {
   if (gutil.env.type === 'prod') {
-    var libs = gulp.src('public/app.min.js', {read: false});
+    var libs = gulp.src(version('app.min.js'), {read: false});
   } else {
     libs = gulp.src([
-          'public/**/*.css',
-          'public/**/*.js',
-          '!public/js/app.js',
-          '!public/**/*.min.js',
-          '!public/**/*.min.css'
+          version('**/*.css'),
+          version('**/*.js'),
+          version('!js/app.js'),
+          version('!**/*.min.js'),
+          version('!**/*.min.css')
         ], {read: false}).pipe(sort());
-    libs = merge(gulp.src('public/js/app.js', {read: false}), libs);
+    libs = merge(gulp.src(version('js/app.js'), {read: false}), libs);
   }
   var result = gulp.src('src/index.html')
         .pipe(gulp.dest('work'))
+        .pipe(replace('@@version@@', version.ts))
         .pipe(include())
         .pipe(inject(libs, {addRootSlash: false, ignorePath: 'public'}))
         .pipe(cdn('cdn.json', {
@@ -48,7 +67,6 @@ gulp.task('html', ['data', 'js', 'libcss', 'static'], function () {
           scheme: 'https'
         }))
   ;
-  result = merge(result, gulp.src(['src/**/*.html', '!src/index.html']));
   if (gutil.env.type === 'prod') {
     result = result
       .pipe(minimize({
@@ -57,7 +75,24 @@ gulp.task('html', ['data', 'js', 'libcss', 'static'], function () {
       }))
       ;
   }
-  return result.pipe(gulp.dest('public'));
+  return result
+    .pipe(gulp.dest('public'));
+});
+
+gulp.task('partials', ['version'], function () {
+  var result = gulp.src('src/partials/**/*.html')
+    .pipe(replace('@@version@@', version.ts))
+  ;
+  if (gutil.env.type === 'prod') {
+    result = result
+      .pipe(minimize({
+        conditionals: true,
+        empty: true
+      }))
+      ;
+  }
+  return result
+    .pipe(gulp.dest(version('partials')));
 });
 
 gulp.task('static', function () {
@@ -67,7 +102,7 @@ gulp.task('static', function () {
     ;
 });
 
-gulp.task('js', function () {
+gulp.task('js', ['version'], function () {
   var result = gulp.src(['src/**/*.js', '!src/js/app.js'])
     .pipe(sort())
   ;
@@ -78,11 +113,12 @@ gulp.task('js', function () {
       .pipe(uglify())
       ;
   }
-  return result.pipe(gulp.dest('public'));
+  return result
+    .pipe(replace('@@version@@', version.ts))
+    .pipe(gulp.dest(version()));
 });
 
-gulp.task('libcss', function () {
-  del.sync(['work/libs/**/*.css', 'public/css']);
+gulp.task('libcss', ['version'], function () {
   if (gutil.env.type === 'prod') {
     return gulp.src('libs/**/*.min.css')
       .pipe(cssImport({}))
@@ -90,8 +126,15 @@ gulp.task('libcss', function () {
       ;
   }
   return gulp.src(['libs/**/*.css', '!libs/**/*.min.css'])
-    .pipe(gulp.dest('public/css'))
+    .pipe(gulp.dest(version('css')))
     ;
+})
+
+gulp.task('version', function(cb) {
+  del(version());
+  version.ts = null;
+  version();
+  cb();
 });
 
 gulp.task('watch', function() {

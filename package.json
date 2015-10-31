@@ -19,6 +19,7 @@
     "gulp-inject-cdn": "git+https://github.com/mattkenney/gulp-inject-cdn#v0.0.1",
     "gulp-jsonminify": "~1.0.0",
     "gulp-minify-html": "~1.0.4",
+    "gulp-replace": "~0.5.4",
     "gulp-sort": "~1.1.1",
     "gulp-uglify": "~1.4.1",
     "gulp-util": "~3.0.6",

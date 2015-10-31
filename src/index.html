@@ -32,9 +32,6 @@
   float: right;
   padding: 0 1ex;
 }
-.app-delete:after {
-  content: "\2613";
-}
 .app-navbar-filler {
   height: 93px;
 }
@@ -57,7 +54,7 @@ ga('create','UA-41221215-1','auto');
   <div data-ng-view=""></div>
 </div>
 <!-- the default view is here for quick display -->
-<script id="partials/navbar.html" type="text/ng-template">
+<script id="@@version@@/partials/navbar.html" type="text/ng-template">
   <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
     <div class="container-fluid">
         <a class="navbar-brand" data-ng-click="back()" data-ng-show="back">
@@ -105,9 +102,9 @@ ga('create','UA-41221215-1','auto');
     <a href="mailto:matt@phillytrain.com">matt@phillytrain.com</a>.
   </div>
 </script>
-<script id="partials/tripform.html" type="text/ng-template">
+<script id="@@version@@/partials/tripform.html" type="text/ng-template">
   <div data-ng-controller="TripFormCtrl">
-    <div data-ng-include="'partials/navbar.html'"></div>
+    <div data-ng-include="'@@version@@/partials/navbar.html'"></div>
     <div class="xrow">
       <div class="panel panel-default">
         <div class="panel-body">
@@ -145,7 +142,7 @@ ga('create','UA-41221215-1','auto');
         </div>
       </div>
     </div>
-    <div class="xrow" data-ng-if="recent.length">
+    <div data-ng-if="recent.length">
       <div class="panel panel-default">
         <div class="panel-body">
           <h4>Recent trips</h4>
@@ -156,7 +153,7 @@ ga('create','UA-41221215-1','auto');
                 &#8211;
                 <span data-ng-bind="trip.stationTo"></span>
                 <span class="app-delete"
-                  data-ng-click="removeTrip(trip, $event)"></span>
+                  data-ng-click="removeTrip(trip, $event)">&times;</span>
               </a>
             </li>
           </ul>

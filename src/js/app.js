@@ -5,13 +5,13 @@ angular.module('app', [
 function($routeProvider) {
   $routeProvider.
     when('/trips', {
-      templateUrl: 'partials/tripform.html'
+      templateUrl: '@@version@@/partials/tripform.html'
     }).
     when('/trip/:stationFrom/:stationTo', {
-      templateUrl: 'partials/triplist.html'
+      templateUrl: '@@version@@/partials/triplist.html'
     }).
     when('/trip/:stationFrom/:stationTo/:line/:train', {
-      templateUrl: 'partials/train.html'
+      templateUrl: '@@version@@/partials/train.html'
     }).
     otherwise({
       redirectTo: '/trips'

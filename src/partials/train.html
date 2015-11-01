@@ -16,7 +16,7 @@
         <span data-ng-bind="station.scheduled"
           data-ng-class="{'app-delayed-from': station.isDelayed}"></span>
         <span class="app-delayed-to" data-ng-bind="station.estimated" 
-          data-ng-if="station.estimated && station.isDelayed"></span>
+          data-ng-if="station.estimated &amp;&amp; station.isDelayed"></span>
         <span data-ng-bind="station.actual" data-ng-if="station.isDelayed"></span>
       </div>
     </div>

@@ -68,11 +68,22 @@ gulp.task('html', ['data', 'js', 'libcss', 'partials', 'static'], function () {
         }))
   ;
   if (gutil.env.type === 'prod') {
+    // minify html, but preserve the license comment by temporarily
+    // making it a <pre>, and then back into a comment
     result = result
+      .pipe(replace(/<!--(.|\n)*?-->/g, function (comment) {
+        var m = (/<!--((.|\n)*?@license\b(.|\n)*?)-->/).exec(comment);
+        if (m) {
+          return '<pre>\n@licstart\n' + m[1] + '\n@licend\n</pre>';
+        }
+        return comment;
+      }))
       .pipe(minimize({
         conditionals: true,
         empty: true
       }))
+      .pipe(replace('<pre>\n@licstart\n', '\n<!--'))
+      .pipe(replace('\n@licend\n</pre>', '-->\n'))
       ;
   }
   return result
@@ -110,7 +121,9 @@ gulp.task('js', ['version'], function () {
   if (gutil.env.type === 'prod') {
     result = result
       .pipe(concat('app.min.js'))
-      .pipe(uglify())
+      .pipe(uglify({
+        preserveComments:'license'
+      }))
       ;
   }
   return result

@@ -1,3 +1,8 @@
+/*!
+@copyright Copyright 2013, 2014, 2015 Matt Kenney
+@license http://www.gnu.org/licenses/agpl.txt
+@source https://github.com/mattkenney/phillytrain
+*/
 angular.module('app', [
   'ngAnimate', 'ngResource', 'ngRoute', 'ngSanitize',
   'LocalStorageModule', 'ui.bootstrap'

@@ -11,6 +11,7 @@ var cdn = require('gulp-inject-cdn')
 ,   merge = require('merge-stream')
 ,   minimize = require('gulp-minify-html')
 ,   replace = require('gulp-replace')
+,   sourcemaps = require('gulp-sourcemaps')
 ,   sort = require('gulp-sort')
 ,   uglify = require('gulp-uglify')
 ;
@@ -120,10 +121,12 @@ gulp.task('js', ['version'], function () {
   result = merge(gulp.src('src/**/js/app.js'), result);
   if (gutil.env.type === 'prod') {
     result = result
+      .pipe(sourcemaps.init())
       .pipe(concat('app.min.js'))
       .pipe(uglify({
         preserveComments:'license'
       }))
+      .pipe(sourcemaps.write('.'))
       ;
   }
   return result

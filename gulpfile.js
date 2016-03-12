@@ -108,8 +108,8 @@ gulp.task('partials', ['version'], function () {
 });
 
 gulp.task('static', function () {
-  return gulp.src(['static/**/*.ico', 'static/**/*.png', 'static/**/*.svg',
-      'static/**/*.txt'])
+  return gulp.src(['static/**/*.gif', 'static/**/*.ico', 'static/**/*.png',
+      'static/**/*.svg', 'static/**/*.txt'])
     .pipe(gulp.dest('public'))
     ;
 });

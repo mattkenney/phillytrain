@@ -43,7 +43,7 @@ angular.module('app').factory('appNextToArrive', [
     }
 
     var collection = $resource(
-      'http://www3.septa.org/hackathon/NextToArrive/',
+      '//www3.septa.org/hackathon/NextToArrive/',
       {
         callback: 'JSON_CALLBACK'
       },

@@ -13,7 +13,7 @@ angular.module('app').factory('appAlerts', [
     }
 
     var collection = $resource(
-      'http://www3.septa.org/hackathon/Alerts/get_alert_data.php',
+      '//www3.septa.org/hackathon/Alerts/get_alert_data.php',
       {
         callback: 'JSON_CALLBACK'
       },

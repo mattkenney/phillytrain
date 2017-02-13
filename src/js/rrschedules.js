@@ -36,7 +36,7 @@ angular.module('app').factory('appRRSchedules', [
     }
 
     var collection = $resource(
-      'http://www3.septa.org/hackathon/RRSchedules/',
+      '//www3.septa.org/hackathon/RRSchedules/',
       {
         callback: 'JSON_CALLBACK'
       },

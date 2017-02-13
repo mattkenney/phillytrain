@@ -7,7 +7,7 @@
     "url": "https://github.com/mattkenney/phillytrain"
   },
   "author": "matt@phillytrain.com",
-  "license": "AGPL",
+  "license": "AGPL-1.0",
   "dependencies": {
     "del": "~2.0.2",
     "gulp": "~3.9.0",

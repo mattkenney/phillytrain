@@ -1,6 +1,6 @@
 /*!
-@copyright Copyright 2013, 2014, 2015 Matt Kenney
-@license http://www.gnu.org/licenses/agpl.txt
+@copyright Copyright 2013, 2014, 2015, 2017 Matt Kenney
+@license https://www.gnu.org/licenses/agpl.txt
 @source https://github.com/mattkenney/phillytrain
 */
 angular.module('app', [

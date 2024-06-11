@@ -2,15 +2,17 @@ import { useLoaderData, useParams } from 'react-router-dom';
 import fetchJsonp from 'fetch-jsonp';
 
 import { Layout } from '../components/Layout';
-import { Trip, TripData } from '../components/Trip';
+import { TripStack, TripData } from '../components/TripStack';
+import { useGoBack } from '../routerHooks';
 
 export function Component() {
+  const back = useGoBack('/');
   const data = useLoaderData() as TripData[];
   const { from, to } = useParams();
 
   return (
-    <Layout>
-      <Trip data={data} from={from} to={to} />
+    <Layout back={back}>
+      <TripStack data={data} from={from} to={to} />
     </Layout>
   );
 }

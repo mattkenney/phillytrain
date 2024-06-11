@@ -1,10 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-
 import { Layout } from '../components/Layout';
 import { FindTrip } from '../components/FindTrip';
+import { useGoForward } from '../routerHooks';
 
 export function Component() {
-  const navigate = useNavigate();
+  const navigate = useGoForward();
 
   return (
     <Layout>

@@ -1,8 +1,8 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { applyDelay, formatTime, parseDelay, parseTime } from '../util';
-import { TripData } from './TripCard';
+import { applyDelay, formatTime, parseDelay, parseTime } from '../lib/time';
+import { TripData } from '../models/TripData';
 
 interface TripSegmentProps {
   data: TripData;
@@ -67,7 +67,15 @@ function TripTime({ delay, stop, time, verb }: TripTimeProps) {
 
 export function TripTitle({ data }: { data: TripData }) {
   const departure = parseTime(data.orig_departure_time);
-  const arrival = parseTime((data.isdirect === 'false' || !data.isdirect) ? data.term_arrival_time : data.orig_arrival_time);
+  const arrival = parseTime(
+    data.isdirect === 'false' || !data.isdirect
+      ? data.term_arrival_time
+      : data.orig_arrival_time,
+  );
 
-  return <Typography>{formatTime(departure)} - {formatTime(arrival)}</Typography>;
+  return (
+    <Typography>
+      {formatTime(departure)} - {formatTime(arrival)}
+    </Typography>
+  );
 }

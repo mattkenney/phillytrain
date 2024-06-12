@@ -5,22 +5,8 @@ import CardHeader from '@mui/material/CardHeader';
 // import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
+import { TripData } from '../models/TripData';
 import { TripSegment, TripTitle } from './TripSegment';
-
-export interface TripData {
-  Connection?: string;
-  isdirect: string;
-  orig_arrival_time: string;
-  orig_delay: string;
-  orig_departure_time: string;
-  orig_line: string;
-  orig_train: string;
-  term_arrival_time?: string;
-  term_delay?: string;
-  term_depart_time?: string;
-  term_line?: string;
-  term_train?: string;
-}
 
 interface TripCardProps {
   data: TripData;
@@ -34,7 +20,6 @@ export function TripCard({ data, from, to }: TripCardProps) {
       <CardHeader
         sx={{ bgcolor: 'primary.main', color: 'primary.contrastText' }}
         title={<TripTitle data={data} />}
-        titleTypographyProps={{ variant: 'h6' }}
       />
       <CardContent>
         <Stack>

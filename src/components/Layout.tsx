@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react';
 import AppBar from '@mui/material/AppBar';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import ArrowBack from '@mui/icons-material/ArrowBack';
 
 interface LayoutProps {
   back?: () => void;
@@ -36,7 +37,9 @@ export function Layout({ back, children }: LayoutProps) {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Container sx={{ mb: '2ex', mt: '9ex' }}>{children}</Container>
+      <Container sx={{ mb: '2ex', mt: '9ex' }}>
+        <Stack spacing={2}>{children}</Stack>
+      </Container>
     </>
   );
 }

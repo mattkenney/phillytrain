@@ -1,6 +1,6 @@
 import { addMinutes, format, parse } from 'date-fns';
 
-export function applyDelay(when?: Date, minutes: number) {
+export function applyDelay(when: Date | undefined, minutes: number) {
   if (!when) return undefined;
   return addMinutes(when, minutes);
 }

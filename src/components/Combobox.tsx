@@ -1,4 +1,4 @@
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
 export interface ComboboxProps {
@@ -19,6 +19,7 @@ export function Combobox({
   return (
     <Autocomplete
       disablePortal
+      filterOptions={createFilterOptions({ matchFrom: 'start' })}
       fullWidth
       id={id}
       onChange={onChange}

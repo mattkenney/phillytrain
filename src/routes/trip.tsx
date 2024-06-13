@@ -3,11 +3,12 @@ import fetchJsonp from 'fetch-jsonp';
 
 import { Layout } from '../components/Layout';
 import { TripCard } from '../components/TripCard';
+import { Alerts } from '../containers/Alerts';
 import railroad from '../data/railroad.json';
 import { TripData } from '../models/TripData';
 import { useGoBack } from '../routerHooks';
 
-const nextToArrive = 'https://www3.septa.org/hackathon/NextToArrive/';
+const nextToArrive = 'https://www3.septa.org/api/NextToArrive/';
 
 export function Component() {
   const back = useGoBack('/');
@@ -16,6 +17,7 @@ export function Component() {
 
   return (
     <Layout back={back}>
+      <Alerts data={data} />
       {data?.map((trip, n) => (
         <TripCard key={n} data={trip} from={from} to={to} />
       ))}

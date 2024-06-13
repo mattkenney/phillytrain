@@ -157,41 +157,18 @@
     "Yardley": { "id": "90326", "r": "wtren" }
   },
   "routes": {
-    "apt": "Airport",
-    "che": "Chestnut Hill East",
-    "chw": "Chestnut Hill West",
-    "cyn": "Cynwyd",
-    "fxc": "Fox Chase",
-    "landdoy": "Lansdale/Doylestown",
-    "med": "Media/Elwyn",
-    "nor": "Manayunk/Norristown",
-    "pao": "Paoli/Thorndale",
-    "trent": "Trenton",
-    "warm": "Warminster",
-    "wilm": "Wilmington/Newark",
-    "wtren": "West Trenton"
-  },
-  "aliases": {
-    "30th St": "30th Street Station",
-    "Airport": "Airport Terminal E-F",
-    "Chestnut H East": "Chestnut Hill East",
-    "Chestnut H West": "Chestnut Hill West",
-    "Norristown": "Norristown TC",
-    "West Trenton Yard": "West Trenton"
-  },
-  "terminus": {
-    "Airport": "Temple U",
-    "Chestnut Hill East": "30th Street Station",
-    "Chestnut Hill West": "Temple U",
-    "Cynwyd": "Suburban Station",
-    "Fox Chase": "30th Street Station",
-    "Lansdale/Doylestown": "30th Street Station",
-    "Manayunk/Norristown": "University City",
-    "Media/Elwyn": "Temple U",
-    "Paoli/Thorndale": "Temple U",
-    "Trenton": "Temple U",
-    "Warminster": "University City",
-    "West Trenton": "University City",
-    "Wilmington/Newark": "Temple U"
+    "rr_route_apt": "Airport",
+    "rr_route_che": "Chestnut Hill East",
+    "rr_route_chw": "Chestnut Hill West",
+    "rr_route_cyn": "Cynwyd",
+    "rr_route_fxc": "Fox Chase",
+    "rr_route_landdoy": "Lansdale/Doylestown",
+    "rr_route_med": "Media/Elwyn",
+    "rr_route_nor": "Manayunk/Norristown",
+    "rr_route_pao": "Paoli/Thorndale",
+    "rr_route_trent": "Trenton",
+    "rr_route_warm": "Warminster",
+    "rr_route_wilm": "Wilmington/Newark",
+    "rr_route_wtren": "West Trenton"
   }
 }

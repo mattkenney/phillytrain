@@ -14,4 +14,9 @@ export const router = createBrowserRouter([
     errorElement: <RouteError />,
     lazy: () => import('./routes/trip'),
   },
+  {
+    path: '/trip/:from/:to/:line/:train',
+    errorElement: <RouteError />,
+    lazy: () => import('./routes/train'),
+  },
 ]);

@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
+    "ci-format": "prettier --check .",
+    "ci-lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "dev": "vite",
     "format": "prettier --write .",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "npm -- run ci-lint --fix",
     "postbuild": "./head-insert.sh",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -18,6 +21,7 @@
     "@mui/icons-material": "^5.15.19",
     "@mui/material": "^5.15.19",
     "date-fns": "^3.6.0",
+    "fastest-levenshtein": "^1.0.16",
     "fetch-jsonp": "^1.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -33,6 +37,7 @@
     "eslint-plugin-react": "^7.34.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "husky": "^9.0.11",
     "prettier": "^3.3.1",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"

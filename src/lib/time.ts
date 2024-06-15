@@ -1,8 +1,11 @@
 import { addMinutes, format, parse } from 'date-fns';
 
-export function applyDelay(when: Date | undefined, minutes: number) {
+export function applyDelay(
+  when: Date | undefined,
+  minutes: number | undefined,
+) {
   if (!when) return undefined;
-  return addMinutes(when, minutes);
+  return addMinutes(when, minutes ?? 0);
 }
 
 export function formatTime(when?: Date) {
@@ -17,5 +20,8 @@ export function parseDelay(str?: string) {
 
 export function parseTime(str?: string) {
   if (!str || /na/i.test(str)) return undefined;
+  if (str.includes(' ')) {
+    return parse(str, 'h:mm a', new Date());
+  }
   return parse(str, 'h:mma', new Date());
 }

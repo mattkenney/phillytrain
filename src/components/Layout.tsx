@@ -16,7 +16,7 @@ interface LayoutProps {
 }
 
 export function Layout({ back, children }: LayoutProps) {
-  const [ showInfo, setShowInfo ] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   return (
     <>
@@ -44,7 +44,9 @@ export function Layout({ back, children }: LayoutProps) {
             aria-label="info"
             color="inherit"
             edge="end"
-            onClick={() => { setShowInfo(!showInfo) }}
+            onClick={() => {
+              setShowInfo(!showInfo);
+            }}
             size="large"
             sx={{ mr: 2 }}
           >
@@ -54,7 +56,13 @@ export function Layout({ back, children }: LayoutProps) {
       </AppBar>
       <Container sx={{ mb: '2ex', mt: '9ex' }}>
         <Stack spacing={2}>
-          {showInfo && <About onClose={() => { setShowInfo(false); }} />}
+          {showInfo && (
+            <About
+              onClose={() => {
+                setShowInfo(false);
+              }}
+            />
+          )}
           {children}
         </Stack>
       </Container>

@@ -1,4 +1,19 @@
 {
+  "routes": {
+    "rr_route_apt": "Airport",
+    "rr_route_che": "Chestnut Hill East",
+    "rr_route_chw": "Chestnut Hill West",
+    "rr_route_cyn": "Cynwyd",
+    "rr_route_fxc": "Fox Chase",
+    "rr_route_landdoy": "Lansdale/Doylestown",
+    "rr_route_med": "Media/Elwyn",
+    "rr_route_nor": "Manayunk/Norristown",
+    "rr_route_pao": "Paoli/Thorndale",
+    "rr_route_trent": "Trenton",
+    "rr_route_warm": "Warminster",
+    "rr_route_wilm": "Wilmington/Newark",
+    "rr_route_wtren": "West Trenton"
+  },
   "stops": {
     "30th Street Station": { "id": "90004", "r": "c" },
     "49th St": { "id": "90314", "r": "med" },
@@ -155,20 +170,5 @@
     "Wynnefield Avenue": { "id": "90003", "r": "cyn" },
     "Wynnewood": { "id": "90519", "r": "pao" },
     "Yardley": { "id": "90326", "r": "wtren" }
-  },
-  "routes": {
-    "rr_route_apt": "Airport",
-    "rr_route_che": "Chestnut Hill East",
-    "rr_route_chw": "Chestnut Hill West",
-    "rr_route_cyn": "Cynwyd",
-    "rr_route_fxc": "Fox Chase",
-    "rr_route_landdoy": "Lansdale/Doylestown",
-    "rr_route_med": "Media/Elwyn",
-    "rr_route_nor": "Manayunk/Norristown",
-    "rr_route_pao": "Paoli/Thorndale",
-    "rr_route_trent": "Trenton",
-    "rr_route_warm": "Warminster",
-    "rr_route_wilm": "Wilmington/Newark",
-    "rr_route_wtren": "West Trenton"
   }
 }

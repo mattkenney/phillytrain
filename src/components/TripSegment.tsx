@@ -1,17 +1,27 @@
+import IconButton from '@mui/material/IconButton';
+import InfoOutlined from '@mui/icons-material/InfoOutlined';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { applyDelay, formatTime, parseDelay, parseTime } from '../lib/time';
+import { applyDelay, parseDelay, parseTime } from '../lib/time';
 import { TripData } from '../models/TripData';
+import { TripTime } from './TripTime';
 
 interface TripSegmentProps {
   data: TripData;
   from?: string;
+  navigate: (href: string) => void;
   term?: boolean;
   to?: string;
 }
 
-export function TripSegment({ data, from, term, to }: TripSegmentProps) {
+export function TripSegment({
+  data,
+  from,
+  navigate,
+  term,
+  to,
+}: TripSegmentProps) {
   const arrival = parseTime(
     term ? data.term_arrival_time : data.orig_arrival_time,
   );
@@ -23,59 +33,34 @@ export function TripSegment({ data, from, term, to }: TripSegmentProps) {
   );
   const line = term ? data.term_line : data.orig_line;
   const train = term ? data.term_train : data.orig_train;
+  const infoHref = ['', 'trip', depart, arrive, line, train]
+    .map(x => encodeURIComponent(x ?? '_'))
+    .join('/');
 
   return (
     <Stack>
-      <Typography component="div" variant="h6">
-        {line} {train}
-      </Typography>
-      <TripTime delay={delay} time={departure} stop={depart} verb="depart" />
-      <TripTime delay={delay} time={arrival} stop={arrive} verb="arrive" />
-    </Stack>
-  );
-}
-
-interface TripTimeProps {
-  delay?: number;
-  stop?: string;
-  time?: Date;
-  verb?: string;
-}
-
-function TripTime({ delay, stop, time, verb }: TripTimeProps) {
-  if (delay && time) {
-    const when = applyDelay(time, delay);
-    return (
-      <Typography>
-        <Typography
-          component="span"
-          sx={{ fontStyle: 'italic', textDecorationLine: 'line-through' }}
+      <Stack direction="row">
+        <Typography component="div" variant="h6">
+          {line} {train}
+        </Typography>
+        <IconButton
+          aria-label="info"
+          onClick={() => {
+            navigate(infoHref);
+          }}
+          size="small"
         >
-          {formatTime(time)}
-        </Typography>{' '}
-        {formatTime(when)} {verb} {stop}
+          <InfoOutlined />
+        </IconButton>
+      </Stack>
+      <Typography>
+        <TripTime actual={applyDelay(departure, delay)} scheduled={departure} />
+        {` depart ${depart ?? '?'}`}
       </Typography>
-    );
-  }
-
-  return (
-    <Typography>
-      {formatTime(time)} {verb} {stop}
-    </Typography>
-  );
-}
-
-export function TripTitle({ data }: { data: TripData }) {
-  const departure = parseTime(data.orig_departure_time);
-  const arrival = parseTime(
-    data.isdirect === 'false' || !data.isdirect
-      ? data.term_arrival_time
-      : data.orig_arrival_time,
-  );
-
-  return (
-    <Typography>
-      {formatTime(departure)} - {formatTime(arrival)}
-    </Typography>
+      <Typography>
+        <TripTime actual={applyDelay(arrival, delay)} scheduled={arrival} />
+        {` arrive ${arrive ?? '?'}`}
+      </Typography>
+    </Stack>
   );
 }

@@ -1,20 +1,20 @@
 import Card from '@mui/material/Card';
-// import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-// import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
 import { TripData } from '../models/TripData';
-import { TripSegment, TripTitle } from './TripSegment';
+import { TripSegment } from './TripSegment';
+import { TripTitle } from './TripTime';
 
 interface TripCardProps {
   data: TripData;
   from?: string;
+  navigate: (href: string) => void;
   to?: string;
 }
 
-export function TripCard({ data, from, to }: TripCardProps) {
+export function TripCard({ data, from, navigate, to }: TripCardProps) {
   return (
     <Card>
       <CardHeader
@@ -23,17 +23,18 @@ export function TripCard({ data, from, to }: TripCardProps) {
       />
       <CardContent>
         <Stack>
-          <TripSegment data={data} from={from} to={to} />
+          <TripSegment data={data} from={from} navigate={navigate} to={to} />
           {(data.isdirect === 'false' || !data.isdirect) && (
-            <TripSegment data={data} from={from} term to={to} />
+            <TripSegment
+              data={data}
+              from={from}
+              navigate={navigate}
+              term
+              to={to}
+            />
           )}
         </Stack>
       </CardContent>
-      {/*
-      <CardActions>
-        <Button size="small">Stops</Button>
-      </CardActions>
-      */}
     </Card>
   );
 }

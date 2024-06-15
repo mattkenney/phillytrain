@@ -6,7 +6,8 @@ import railroad from '../data/railroad.json';
 import { AlertData } from '../models/AlertData';
 import { TripData } from '../models/TripData';
 
-const alertsUrl = 'https://www3.septa.org/api/Alerts/get_alert_data.php';
+const apiBase = import.meta.env.VITE_API_BASE as string | undefined;
+const alertsUrl = `${apiBase ?? '/api'}/Alerts/get_alert_data.php`;
 
 interface AlertsProps {
   data?: TripData[];

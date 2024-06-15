@@ -1,29 +1,23 @@
 import { useLoaderData, useParams } from 'react-router-dom';
 import fetchJsonp from 'fetch-jsonp';
 
-import { Layout } from '../components/Layout';
-import { TripCard } from '../components/TripCard';
-import { Alerts } from '../containers/Alerts';
 import railroad from '../data/railroad.json';
-import { TripData } from '../models/TripData';
+import { Layout } from '../components/Layout';
+import { Train } from '../components/Train';
+import { TrainStop } from '../models/TrainStop';
 import { useGoBack } from '../routerHooks';
-import { useGoForward } from '../routerHooks';
 
 const apiBase = import.meta.env.VITE_API_BASE as string | undefined;
-const nextToArrive = `${apiBase ?? '/api'}/NextToArrive/`;
+const schedules = `${apiBase ?? '/api'}/RRSchedules/`;
 
 export function Component() {
-  const back = useGoBack('/');
-  const navigate = useGoForward();
-  const data = useLoaderData() as TripData[] | undefined;
-  const { from, to } = useParams();
+  const data = useLoaderData() as TrainStop[];
+  const { from, line, to, train } = useParams();
+  const back = useGoBack(['', 'trip', from, to].join('/'));
 
   return (
     <Layout back={back}>
-      <Alerts data={data} />
-      {data?.map((trip, n) => (
-        <TripCard key={n} data={trip} from={from} navigate={navigate} to={to} />
-      ))}
+      <Train data={data} from={from} line={line} to={to} train={train} />
     </Layout>
   );
 }
@@ -35,20 +29,21 @@ export async function loader({
 }: {
   params: Record<string, string | undefined>;
 }) {
-  const { from, to } = params;
+  const { from, line, to, train } = params;
   const stationFrom = decodeURIComponent(from ?? '');
   const stationTo = decodeURIComponent(to ?? '');
 
   if (
     !Object.prototype.hasOwnProperty.call(railroad.stops, stationFrom) ||
-    !Object.prototype.hasOwnProperty.call(railroad.stops, stationTo)
+    !Object.prototype.hasOwnProperty.call(railroad.stops, stationTo) ||
+    !Object.entries(railroad.routes).find(pair => pair[1] === line) ||
+    !/^[0-9]{4}$/.test(train ?? '')
   ) {
     throw new Error('Not Found');
   }
 
-  const url = new URL(nextToArrive);
-  url.searchParams.set('req1', stationFrom);
-  url.searchParams.set('req2', stationTo);
+  const url = new URL(schedules);
+  url.searchParams.set('req1', train ?? '');
 
   const res = await fetchJsonp(url.href);
 

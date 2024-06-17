@@ -2,7 +2,7 @@ import { useLoaderData, useParams } from 'react-router-dom';
 import fetchJsonp from 'fetch-jsonp';
 
 import { Layout } from '../components/Layout';
-import { TripCard } from '../components/TripCard';
+import { Trips } from '../components/Trips';
 import { Alerts } from '../containers/Alerts';
 import railroad from '../data/railroad.json';
 import { TripData } from '../models/TripData';
@@ -11,6 +11,7 @@ import { useGoForward } from '../routerHooks';
 
 const apiBase = import.meta.env.VITE_API_BASE as string | undefined;
 const nextToArrive = `${apiBase ?? '/api'}/NextToArrive/`;
+const timeout = 10000;
 
 export function Component() {
   const back = useGoBack('/');
@@ -21,9 +22,7 @@ export function Component() {
   return (
     <Layout back={back}>
       <Alerts data={data} />
-      {data?.map((trip, n) => (
-        <TripCard key={n} data={trip} from={from} navigate={navigate} to={to} />
-      ))}
+      <Trips data={data} from={from} navigate={navigate} to={to} />
     </Layout>
   );
 }
@@ -50,7 +49,7 @@ export async function loader({
   url.searchParams.set('req1', stationFrom);
   url.searchParams.set('req2', stationTo);
 
-  const res = await fetchJsonp(url.href);
+  const res = await fetchJsonp(url.href, { timeout });
 
   return res.json();
 }

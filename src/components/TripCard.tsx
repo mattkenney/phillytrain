@@ -10,7 +10,7 @@ import { TripTitle } from './TripTime';
 interface TripCardProps {
   data: TripData;
   from?: string;
-  navigate: (href: string) => void;
+  navigate?: (href: string) => void;
   to?: string;
 }
 

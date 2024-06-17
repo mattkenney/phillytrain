@@ -7,10 +7,20 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-//import { closest } from 'fastest-levenshtein';
 
+import railroad from '../data/railroad.json';
 import { TrainStop } from '../models/TrainStop';
 import { TripTime } from './TripTime';
+
+// Get the cannonical station name, i.e. "Market%20East" -> "Jefferson Station"
+function stationName(param?: string) {
+  const stops = railroad.stops as unknown as Record<
+    string,
+    { aka?: string; station: string } | undefined
+  >;
+  const key = decodeURIComponent(param ?? '');
+  return stops[key]?.aka ?? key;
+}
 
 interface TrainProps {
   data: TrainStop[];
@@ -21,6 +31,17 @@ interface TrainProps {
 }
 
 export function Train({ data, from, line, to, train }: TrainProps) {
+  const fromStation = stationName(from);
+  const toStation = stationName(to);
+  const stations = data.map(
+    stop =>
+      railroad.aliases[stop.station as keyof typeof railroad.aliases] ||
+      stop.station,
+  );
+  const start = Math.max(0, stations.indexOf(fromStation));
+  const stop = stations.indexOf(toStation);
+  const stops = data.slice(start, stop > start ? stop + 1 : undefined);
+
   return (
     <Card>
       <CardHeader
@@ -37,15 +58,13 @@ export function Train({ data, from, line, to, train }: TrainProps) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map(stop => (
+              {stops.map(stop => (
                 <TableRow
                   key={stop.station}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
                     {stop.station}
-                    {stop.station === from && '*'}
-                    {stop.station === to && '**'}
                   </TableCell>
                   <TableCell>
                     <TripTime

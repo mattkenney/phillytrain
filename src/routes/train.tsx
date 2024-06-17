@@ -9,6 +9,7 @@ import { useGoBack } from '../routerHooks';
 
 const apiBase = import.meta.env.VITE_API_BASE as string | undefined;
 const schedules = `${apiBase ?? '/api'}/RRSchedules/`;
+const timeout = 10000;
 
 export function Component() {
   const data = useLoaderData() as TrainStop[];
@@ -37,7 +38,7 @@ export async function loader({
     !Object.prototype.hasOwnProperty.call(railroad.stops, stationFrom) ||
     !Object.prototype.hasOwnProperty.call(railroad.stops, stationTo) ||
     !Object.entries(railroad.routes).find(pair => pair[1] === line) ||
-    !/^[0-9]{4}$/.test(train ?? '')
+    !/^[0-9]{3,4}$/.test(train ?? '')
   ) {
     throw new Error('Not Found');
   }
@@ -45,7 +46,7 @@ export async function loader({
   const url = new URL(schedules);
   url.searchParams.set('req1', train ?? '');
 
-  const res = await fetchJsonp(url.href);
+  const res = await fetchJsonp(url.href, { timeout });
 
   return res.json();
 }

@@ -8,6 +8,7 @@ import { TripData } from '../models/TripData';
 
 const apiBase = import.meta.env.VITE_API_BASE as string | undefined;
 const alertsUrl = `${apiBase ?? '/api'}/Alerts/get_alert_data.php`;
+const timeout = 10000;
 
 interface AlertsProps {
   data?: TripData[];
@@ -38,7 +39,7 @@ export function Alerts({ data }: AlertsProps) {
     );
 
     // Get the current alerts and filter to the relevant ones
-    fetchJsonp(alertsUrl)
+    fetchJsonp(alertsUrl, { timeout })
       .then(res => res.json() as Promise<AlertData[]>)
       .then(alerts =>
         alerts.filter(

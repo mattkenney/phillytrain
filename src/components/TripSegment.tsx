@@ -10,7 +10,7 @@ import { TripTime } from './TripTime';
 interface TripSegmentProps {
   data: TripData;
   from?: string;
-  navigate: (href: string) => void;
+  navigate?: (href: string) => void;
   term?: boolean;
   to?: string;
 }
@@ -46,7 +46,9 @@ export function TripSegment({
         <IconButton
           aria-label="info"
           onClick={() => {
-            navigate(infoHref);
+            if (navigate) {
+              navigate(infoHref);
+            }
           }}
           size="small"
         >

@@ -1,12 +1,18 @@
+import { useState } from 'react';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
 
 import railroad from '../data/railroad.json';
 import { TrainStop } from '../models/TrainStop';
@@ -31,6 +37,7 @@ interface TrainProps {
 }
 
 export function Train({ data, from, line, to, train }: TrainProps) {
+  const [showAll, setShowAll] = useState(false);
   const fromStation = stationName(from);
   const toStation = stationName(to);
   const stations = data.map(
@@ -38,9 +45,13 @@ export function Train({ data, from, line, to, train }: TrainProps) {
       railroad.aliases[stop.station as keyof typeof railroad.aliases] ||
       stop.station,
   );
-  const start = Math.max(0, stations.indexOf(fromStation));
-  const stop = stations.indexOf(toStation);
-  const stops = data.slice(start, stop > start ? stop + 1 : undefined);
+  const fromOffset = Math.max(0, stations.indexOf(fromStation));
+  const toOffset = Math.max(fromOffset, stations.indexOf(toStation));
+  const start = showAll ? 0 : fromOffset;
+  const end = showAll ? data.length : toOffset + 1;
+  const stops = data.slice(start, end);
+  const fromIndex = fromOffset - start;
+  const toIndex = toOffset - start;
 
   return (
     <Card>
@@ -49,6 +60,21 @@ export function Train({ data, from, line, to, train }: TrainProps) {
         title={`${line ?? '?'} ${train ?? '?'}`}
       />
       <CardContent>
+        <Box alignItems="center" display="flex" justifyContent="center">
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={showAll}
+                  onChange={() => {
+                    setShowAll(!showAll);
+                  }}
+                />
+              }
+              label="Show all stops"
+            />
+          </FormGroup>
+        </Box>
         <TableContainer>
           <Table>
             <TableHead>
@@ -58,13 +84,21 @@ export function Train({ data, from, line, to, train }: TrainProps) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {stops.map(stop => (
+              {stops.map((stop, n) => (
                 <TableRow
                   key={stop.station}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {stop.station}
+                    <Typography
+                      style={
+                        n === fromIndex || n === toIndex
+                          ? { fontSize: '1.1rem', fontWeight: 600 }
+                          : {}
+                      }
+                    >
+                      {stop.station}
+                    </Typography>
                   </TableCell>
                   <TableCell>
                     <TripTime

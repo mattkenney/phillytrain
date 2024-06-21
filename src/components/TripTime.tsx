@@ -15,20 +15,29 @@ export function TripTime({ actual, scheduled }: TripTimeProps) {
   if (typeof scheduled === 'string') {
     scheduled = parseTime(scheduled);
   }
+
+  if (
+    actual &&
+    scheduled &&
+    Math.abs(actual.getTime() - scheduled.getTime()) > 60000
+  ) {
+    return (
+      <>
+        <Typography
+          component="span"
+          sx={{ textDecorationLine: 'line-through' }}
+        >
+          {formatTime(scheduled)}
+        </Typography>{' '}
+        <Typography component="span" sx={{ fontStyle: 'italic' }}>
+          {formatTime(actual)}
+        </Typography>
+      </>
+    );
+  }
+
   return (
-    <>
-      {actual && scheduled && actual.getTime() !== scheduled.getTime() && (
-        <>
-          <Typography
-            component="span"
-            sx={{ fontStyle: 'italic', textDecorationLine: 'line-through' }}
-          >
-            {formatTime(scheduled)}
-          </Typography>{' '}
-        </>
-      )}
-      {formatTime(actual ?? scheduled)}
-    </>
+    <Typography component="span">{formatTime(actual ?? scheduled)}</Typography>
   );
 }
 

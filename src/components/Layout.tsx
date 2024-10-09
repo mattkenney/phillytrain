@@ -1,4 +1,5 @@
 import { ReactNode, useState } from 'react';
+import { useNavigation } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import Container from '@mui/material/Container';
@@ -9,6 +10,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 import { About } from './About';
+import { Loading } from './Loading';
 
 interface LayoutProps {
   back?: () => void;
@@ -16,7 +18,9 @@ interface LayoutProps {
 }
 
 export function Layout({ back, children }: LayoutProps) {
+  const { state } = useNavigation();
   const [showInfo, setShowInfo] = useState(false);
+  const isLoading = state === 'loading';
 
   return (
     <>
@@ -63,7 +67,7 @@ export function Layout({ back, children }: LayoutProps) {
               }}
             />
           )}
-          {children}
+          {isLoading ? <Loading /> : children}
         </Stack>
       </Container>
     </>

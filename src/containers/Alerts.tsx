@@ -3,6 +3,7 @@ import fetchJsonp from 'fetch-jsonp';
 
 import { AlertMessages } from '../components/AlertMessages';
 import railroad from '../data/railroad.json';
+import { logger } from '../logger';
 import { AlertData } from '../models/AlertData';
 import { TripData } from '../models/TripData';
 
@@ -48,7 +49,7 @@ export function Alerts({ data }: AlertsProps) {
       )
       .then(setMessages)
       .catch((err: unknown) => {
-        console.error(err);
+        logger.error(err);
       });
   }, [lines]);
 

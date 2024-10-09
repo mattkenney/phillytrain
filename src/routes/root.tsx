@@ -1,7 +1,6 @@
-import { useLoaderData, useNavigation, useSubmit } from 'react-router-dom';
+import { useLoaderData, useSubmit } from 'react-router-dom';
 
 import { Layout } from '../components/Layout';
-import { Loading } from '../components/Loading';
 import { FindTrip } from '../components/FindTrip';
 import { RecentTrips } from '../components/RecentTrips';
 import { RecentTrip } from '../models/RecentTrip';
@@ -11,7 +10,6 @@ import { addRecent, getRecent, removeRecent } from '../lib/recent';
 export function Component() {
   const goForward = useGoForward();
   const data = useLoaderData() as RecentTrip[];
-  const { state } = useNavigation();
   const submit = useSubmit();
 
   const navigate = (str: string) => {
@@ -22,14 +20,6 @@ export function Component() {
   const remove = (trip: RecentTrip) => {
     submit({ ...trip }, { method: 'post', encType: 'application/json' });
   };
-
-  if (state === 'loading') {
-    return (
-      <Layout>
-        <Loading />
-      </Layout>
-    );
-  }
 
   return (
     <Layout>

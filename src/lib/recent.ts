@@ -1,3 +1,4 @@
+import { logger } from '../logger';
 import { RecentTrip } from '../models/RecentTrip';
 
 const recentKey = 'ls.recent';
@@ -31,7 +32,7 @@ export function getRecent() {
     try {
       result.push(...(JSON.parse(json) as RecentTrip[]));
     } catch (err: unknown) {
-      console.error(err);
+      logger.error(err);
     }
   }
 

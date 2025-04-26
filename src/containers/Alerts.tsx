@@ -47,6 +47,16 @@ export function Alerts({ data }: AlertsProps) {
           alert => alert.current_message && routeIds.includes(alert.route_id),
         ),
       )
+      .then(alerts => {
+        // fuzzy deduplication
+        const alphanums = alerts.map(alert =>
+          alert.current_message?.toLowerCase().replace(/[^0-9a-z]/g, ''),
+        );
+        return alerts.filter(
+          (_, n) =>
+            !alphanums.slice(0, n).some(earlier => earlier === alphanums[n]),
+        );
+      })
       .then(setMessages)
       .catch((err: unknown) => {
         logger.error(err);
